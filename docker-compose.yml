@@ -1,0 +1,14 @@
+services:
+  go-catan: # サービス名
+    container_name: go
+    build: # ビルドに使うDockerファイルのパス
+      context: .
+      dockerfile: ./build/Dockerfile
+    volumes: # マウントディレクトリ
+      - ./src/catan:/go/src/catan
+      - ~/.gitconfig:/root/.gitconfig
+    tty: true
+    env_file: # .envファイル
+      - ./build/.go_env
+    environment:
+      - TZ=Asia/Tokyo
