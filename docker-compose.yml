@@ -1,14 +1,29 @@
+version: '3' 
+
 services:
-  go-catan: # サービス名
+  go: # サービス名
     container_name: go
     build: # ビルドに使うDockerファイルのパス
       context: .
-      dockerfile: ./build/Dockerfile
+      dockerfile: ./go/build/Dockerfile
     volumes: # マウントディレクトリ
-      - ./src/catan:/go/src/catan
+      - ./go/src/catan:/go/src/catan
       - ~/.gitconfig:/root/.gitconfig
     tty: true
     env_file: # .envファイル
-      - ./build/.go_env
+      - ./go/build/.go_env
     environment:
-      - TZ=Asia/Tokyo
+      - TZ=Asia/Tokyos
+
+  next:
+    container_name: next
+    build: 
+      context: .
+      dockerfile: ./next/build/Dockerfile
+    volumes:
+      - ./next/src:/src 
+    ports:
+      - "3000:3000"
+    command: sh -c "npm run dev"
+    stdin_open: true
+    tty: true
